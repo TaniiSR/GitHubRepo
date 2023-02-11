@@ -18,21 +18,34 @@ import org.junit.Test
 class TrendingRepoTest {
     private lateinit var sut : ITrendingRepo
     private lateinit var mockRemoteSource : IRemoteTrendingRepo
+    private lateinit var mockLocalSource : ILocalSource
     @Before
     fun setUp() {
         mockRemoteSource = mockk()
-        sut = TrendingRepo(mockRemoteSource)
+        mockLocalSource = mockk()
+        sut = TrendingRepo(mockRemoteSource, mockLocalSource)
     }
 
     @Test
     fun test_fetch_trending_repos_success_remote() = runTest {
-        coEvery { mockRemoteSource.fetchRepo() } returns NetworkResult.Success(data = mockk<Repository>{
-                every { items } returns listOf(mockk(), mockk())
-            })
-        val actualResult = sut.fetchTrendingRepos() as NetworkResult.Success
+        val mockResponse = NetworkResult.Success(data = mockk<Repository>{
+            every { items } returns listOf(mockk(), mockk())
+        })
+        coEvery { mockRemoteSource.fetchRepo() } returns mockResponse
+        coEvery { mockLocalSource.saveRepoLocally(mockResponse.data) } returns true
+        val actualResult = sut.fetchTrendingRepos(false) as NetworkResult.Success
         val expectedResult = listOf<Item>(mockk(), mockk())
         Assert.assertEquals(expectedResult.size, actualResult.data.items?.size)
         coVerify { mockRemoteSource.fetchRepo() }
+    }
+    @Test
+    fun test_fetch_trending_repos_locally() = runTest {
+        coEvery { mockLocalSource.getLocallySaveRepo()} returns mockk<Repository>{
+            every { items } returns listOf(mockk(), mockk())
+        }
+        val actualResult = sut.fetchTrendingRepos(isFromCache = true) as NetworkResult.Success
+        val expectedResult = listOf<Item>(mockk(), mockk())
+        Assert.assertEquals(expectedResult.size, actualResult.data.items?.size)
     }
 
     @After
