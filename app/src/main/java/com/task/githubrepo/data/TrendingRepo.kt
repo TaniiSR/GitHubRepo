@@ -5,8 +5,9 @@ import com.task.githubrepo.data.local.ILocalSource
 import com.task.githubrepo.data.dtos.Repository
 import com.task.githubrepo.data.remote.IRemoteTrendingRepo
 import com.task.githubrepo.data.remote.base.NetworkResult
+import javax.inject.Inject
 
-class TrendingRepo(
+class TrendingRepo @Inject constructor(
     private val remoteSource: IRemoteTrendingRepo,
     private val localSource: ILocalSource
 ) : ITrendingRepo {

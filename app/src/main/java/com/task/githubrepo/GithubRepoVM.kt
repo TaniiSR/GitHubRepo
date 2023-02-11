@@ -7,10 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.task.githubrepo.data.ITrendingRepo
 import com.task.githubrepo.data.dtos.Item
 import com.task.githubrepo.data.remote.base.NetworkResult
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class GithubRepoVM(private val repository: ITrendingRepo) : ViewModel() {
+@HiltViewModel
+class GithubRepoVM @Inject constructor(private val repository: ITrendingRepo) : ViewModel() {
     private val _trendingRepos: MutableLiveData<List<Item>> = MutableLiveData()
     val trendingRepos: LiveData<List<Item>> = _trendingRepos
 

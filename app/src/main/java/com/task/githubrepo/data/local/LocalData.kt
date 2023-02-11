@@ -6,8 +6,10 @@ import com.google.gson.Gson
 import com.task.githubrepo.REPO_KEY
 import com.task.githubrepo.SHARED_PREFERENCES
 import com.task.githubrepo.data.dtos.Repository
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class LocalData(private val context : Context) : ILocalSource {
+class LocalData @Inject constructor(@ApplicationContext private val context: Context) : ILocalSource {
     override fun getLocallySaveRepo(): Repository? {
         val sharedPref = context.getSharedPreferences(SHARED_PREFERENCES, 0)
         return Gson().fromJson(
