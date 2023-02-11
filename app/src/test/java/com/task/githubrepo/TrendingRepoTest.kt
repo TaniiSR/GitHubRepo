@@ -6,11 +6,11 @@ import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
-import org.junit.Assert
 import org.junit.Assert.*
 
 import org.junit.Before
 import org.junit.Test
+import retrofit2.Response
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -26,11 +26,17 @@ class TrendingRepoTest {
 
     @Test
     fun test_fetch_repos_success() = runTest {
-        coEvery { mockService.getTrendingRepos() } returns mockk {
-            every { items } returns listOf(mockk(), mockk())
-        }
+        coEvery { mockService.getTrendingRepos() } returns Response.success(
+            200,
+            mockk<Repository> { every { items } returns listOf(mockk(), mockk()) }
+        )
+
         val actualResult = sut.fetchRepo()
-        assertEquals(2, actualResult?.size)
+
+        val expectedResult = listOf<Item>(mockk(), mockk())
+
+        assertEquals(expectedResult.size, actualResult?.size)
+
         coVerify { mockService.getTrendingRepos() }
     }
 
