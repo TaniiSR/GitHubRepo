@@ -31,5 +31,9 @@
             tools:listitem="@layout/layout_item_trending_repo" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
+    <include
+        android:id="@+id/lyErrorView"
+        layout="@layout/layout_git_error_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

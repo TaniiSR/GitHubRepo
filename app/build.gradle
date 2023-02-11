@@ -69,6 +69,8 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
     //Swipe
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    // Lottie Animation
+    implementation 'com.airbnb.android:lottie:5.2.0'
 
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
     testImplementation 'io.mockk:mockk:1.13.2'

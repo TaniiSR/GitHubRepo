@@ -2,6 +2,7 @@ package com.task.githubrepo.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import com.task.githubrepo.R
 import com.task.githubrepo.data.dtos.Item
@@ -31,6 +32,9 @@ class GithubRepoActivity : AppCompatActivity() {
             mViewBinding.swRefresh.isRefreshing = false
             viewModel.fetchTrendingRepos(true)
         }
+        mViewBinding.lyErrorView.buttonRetry.setOnClickListener {
+            viewModel.fetchTrendingRepos(true)
+        }
     }
 
     private fun initViews() {
@@ -41,15 +45,26 @@ class GithubRepoActivity : AppCompatActivity() {
         mViewBinding.recyclerView.adapter = adapter
     }
 
-    private fun listData(repos: List<Item>) {
-        if (!(repos.isNullOrEmpty())) {
-            adapter.setList(repos)
-        } else {
+    private fun viewState(viewState: GithubRepoVM.ViewState) {
+        when (viewState) {
+            is GithubRepoVM.ViewState.Loading -> {
+            }
+            is GithubRepoVM.ViewState.Data -> {
+                mViewBinding.lyErrorView.layoutError.visibility = View.GONE
+                mViewBinding.recyclerView.visibility = View.VISIBLE
+                adapter.setList(viewState.repos ?: listOf())
+            }
+
+            is GithubRepoVM.ViewState.Failure -> {
+                mViewBinding.recyclerView.visibility = View.GONE
+                mViewBinding.lyErrorView.layoutError.visibility = View.VISIBLE
+            }
         }
     }
 
+
     private fun addObservers() {
-        viewModel.trendingRepos.observe(this, ::listData)
+        viewModel.viewState.observe(this, ::viewState)
     }
 
 }

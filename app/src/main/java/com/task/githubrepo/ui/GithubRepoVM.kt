@@ -17,16 +17,28 @@ class GithubRepoVM @Inject constructor(private val repository: ITrendingRepo) : 
     private val _trendingRepos: MutableLiveData<List<Item>> = MutableLiveData()
     val trendingRepos: LiveData<List<Item>> = _trendingRepos
 
+    private val _viewState = MutableLiveData<ViewState>()
+    val viewState: LiveData<ViewState> = _viewState
+
     fun fetchTrendingRepos(refresh: Boolean = false) {
+        _viewState.value = ViewState.Loading
         viewModelScope.launch(Dispatchers.IO) {
             when (val response = repository.fetchTrendingRepos(!refresh)) {
                 is NetworkResult.Success -> {
                     _trendingRepos.postValue(response.data.items)
+                    _viewState.postValue(ViewState.Data(response.data.items))
                 }
                 is NetworkResult.Error -> {
                     _trendingRepos.postValue(listOf())
+                    _viewState.postValue(ViewState.Failure(response.error.message ?: ""))
                 }
             }
         }
+    }
+
+    sealed class ViewState {
+        object Loading : ViewState()
+        data class Data(val repos: List<Item>?) : ViewState()
+        data class Failure(val errorMessage: String) : ViewState()
     }
 }
