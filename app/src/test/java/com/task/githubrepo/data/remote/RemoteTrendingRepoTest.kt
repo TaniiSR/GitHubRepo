@@ -1,11 +1,14 @@
-package com.task.githubrepo
+package com.task.githubrepo.data.remote
 
 import com.task.githubrepo.data.dtos.Item
 import com.task.githubrepo.data.dtos.Repository
+import com.task.githubrepo.data.remote.IRemoteTrendingRepo
+import com.task.githubrepo.data.remote.base.NetworkResult
+import com.task.githubrepo.data.remote.RepoService
+import com.task.githubrepo.data.remote.RemoteTrendingRepo
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.After
 import org.junit.Assert.*
@@ -16,14 +19,14 @@ import retrofit2.Response
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class TrendingRepoTest {
-    lateinit var sut: ITrendingRepo
+class RemoteTrendingRepoTest {
+    lateinit var sut: IRemoteTrendingRepo
     lateinit var mockService: RepoService
 
     @Before
     fun setUp() {
         mockService = mockk()
-        sut = TrendingRepo(mockService)
+        sut = RemoteTrendingRepo(mockService)
     }
 
     @Test

@@ -1,4 +1,4 @@
-package com.task.githubrepo
+package com.task.githubrepo.data.remote.base
 
 sealed class NetworkResult<out T: Any> {
     data class Success<out T : Any>(val data: T) : NetworkResult<T>()

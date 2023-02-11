@@ -1,4 +1,4 @@
-package com.task.githubrepo
+package com.task.githubrepo.data.remote.base
 
 import okio.IOException
 import retrofit2.Response
