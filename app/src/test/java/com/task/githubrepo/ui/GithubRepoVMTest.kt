@@ -1,10 +1,11 @@
-package com.task.githubrepo
+package com.task.githubrepo.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.task.githubrepo.data.ITrendingRepo
 import com.task.githubrepo.data.dtos.Item
 import com.task.githubrepo.data.dtos.Repository
 import com.task.githubrepo.data.remote.base.NetworkResult
+import com.task.githubrepo.getOrAwaitValue
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest

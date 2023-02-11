@@ -1,4 +1,4 @@
-package com.task.githubrepo
+package com.task.githubrepo.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
