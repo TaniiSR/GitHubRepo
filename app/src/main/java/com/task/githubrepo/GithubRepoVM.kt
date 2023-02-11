@@ -21,6 +21,7 @@ class GithubRepoVM(private val repository: ITrendingRepo) : ViewModel() {
                     _trendingRepos.postValue(response.data.items)
                 }
                 is NetworkResult.Error -> {
+                    _trendingRepos.postValue(listOf())
                 }
             }
         }

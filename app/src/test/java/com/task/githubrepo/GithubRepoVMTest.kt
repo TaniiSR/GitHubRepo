@@ -5,10 +5,7 @@ import com.task.githubrepo.data.ITrendingRepo
 import com.task.githubrepo.data.dtos.Item
 import com.task.githubrepo.data.dtos.Repository
 import com.task.githubrepo.data.remote.base.NetworkResult
-import io.mockk.clearAllMocks
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.mockk
+import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -44,6 +41,19 @@ class GithubRepoVMTest {
         coVerify { mockRepo.fetchTrendingRepos(false) }
     }
 
+    @Test
+    fun test_fetch_trending_repos_failure() = runTest {
+        val errorMsg = "Request failed please try again"
+        coEvery { mockRepo.fetchTrendingRepos(false) } returns
+                mockk<NetworkResult.Error>{
+                    every { error } returns mockk{
+                        every { message } returns errorMsg
+                    }
+                }
+        sut.fetchTrendingRepos()
+        assertEquals(listOf<Item>(), sut.trendingRepos.getOrAwaitValue())
+        coVerify { mockRepo.fetchTrendingRepos(false) }
+    }
     @After
     fun tearDown() {
         clearAllMocks()
