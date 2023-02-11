@@ -14,7 +14,7 @@ class GithubRepoVM(private val repository: ITrendingRepo) : ViewModel() {
     private val _trendingRepos: MutableLiveData<List<Item>> = MutableLiveData()
     val trendingRepos: LiveData<List<Item>> = _trendingRepos
 
-    fun fetchTrendingRepos(refresh: Boolean = true) {
+    fun fetchTrendingRepos(refresh: Boolean = false) {
         viewModelScope.launch(Dispatchers.IO) {
             when (val response = repository.fetchTrendingRepos(!refresh)) {
                 is NetworkResult.Success -> {

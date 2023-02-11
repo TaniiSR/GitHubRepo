@@ -36,7 +36,7 @@ class GithubRepoVMTest {
                 NetworkResult.Success(data = mockk<Repository> {
             coEvery { items } returns listOf(Item())
         })
-        sut.fetchTrendingRepos()
+        sut.fetchTrendingRepos(true)
         assertEquals(listOf<Item>(Item()), sut.trendingRepos.getOrAwaitValue())
         coVerify { mockRepo.fetchTrendingRepos(false) }
     }
@@ -50,10 +50,22 @@ class GithubRepoVMTest {
                         every { message } returns errorMsg
                     }
                 }
-        sut.fetchTrendingRepos()
+        sut.fetchTrendingRepos(true)
         assertEquals(listOf<Item>(), sut.trendingRepos.getOrAwaitValue())
         coVerify { mockRepo.fetchTrendingRepos(false) }
     }
+
+    @Test
+    fun test_fetch_trend_repos_from_cache() = runTest{
+        coEvery { mockRepo.fetchTrendingRepos(true) } returns
+                NetworkResult.Success(data = mockk<Repository> {
+                    coEvery { items } returns listOf(Item())
+                })
+        sut.fetchTrendingRepos()
+        assertEquals(listOf<Item>(Item()), sut.trendingRepos.getOrAwaitValue())
+        coVerify { mockRepo.fetchTrendingRepos(true) }
+    }
+
     @After
     fun tearDown() {
         clearAllMocks()
