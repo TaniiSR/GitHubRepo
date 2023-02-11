@@ -7,8 +7,10 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
 
 interface RepoService {
+    @GET("search/repositories?q=language=+sort:stars")
     suspend fun getTrendingRepos(): Response<Repository>
     companion object {
         private const val BASE_URL = "https://api.github.com/"
