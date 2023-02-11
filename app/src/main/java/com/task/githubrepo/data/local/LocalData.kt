@@ -1,4 +1,4 @@
-package com.task.githubrepo.data
+package com.task.githubrepo.data.local
 
 import android.content.Context
 import android.content.SharedPreferences

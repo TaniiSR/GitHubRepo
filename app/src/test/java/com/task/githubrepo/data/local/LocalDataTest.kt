@@ -1,4 +1,4 @@
-package com.task.githubrepo.data
+package com.task.githubrepo.data.local
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -7,6 +7,8 @@ import com.task.githubrepo.REPO_KEY
 import com.task.githubrepo.SHARED_PREFERENCES
 import com.task.githubrepo.data.dtos.Item
 import com.task.githubrepo.data.dtos.Repository
+import com.task.githubrepo.data.local.ILocalSource
+import com.task.githubrepo.data.local.LocalData
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

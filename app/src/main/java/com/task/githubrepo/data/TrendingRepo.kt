@@ -1,6 +1,7 @@
-package com.task.githubrepo
+package com.task.githubrepo.data
 
-import com.task.githubrepo.data.ILocalSource
+import com.task.githubrepo.data.ITrendingRepo
+import com.task.githubrepo.data.local.ILocalSource
 import com.task.githubrepo.data.dtos.Repository
 import com.task.githubrepo.data.remote.IRemoteTrendingRepo
 import com.task.githubrepo.data.remote.base.NetworkResult

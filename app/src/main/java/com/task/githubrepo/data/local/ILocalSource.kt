@@ -1,4 +1,4 @@
-package com.task.githubrepo.data
+package com.task.githubrepo.data.local
 
 import com.task.githubrepo.data.dtos.Repository
 

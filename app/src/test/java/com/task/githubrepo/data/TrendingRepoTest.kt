@@ -1,20 +1,17 @@
 package com.task.githubrepo.data
 
-import com.task.githubrepo.ITrendingRepo
-import com.task.githubrepo.TrendingRepo
 import com.task.githubrepo.data.dtos.Item
 import com.task.githubrepo.data.dtos.Repository
+import com.task.githubrepo.data.local.ILocalSource
 import com.task.githubrepo.data.remote.IRemoteTrendingRepo
 import com.task.githubrepo.data.remote.base.NetworkResult
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import retrofit2.Response
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class TrendingRepoTest {
