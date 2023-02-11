@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".ui.GithubRepoActivity">
 
+    <include
+        android:id="@+id/lyLoadingView"
+        layout="@layout/layout_git_loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swRefresh"
         android:layout_width="match_parent"

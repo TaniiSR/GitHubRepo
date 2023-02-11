@@ -46,13 +46,16 @@ class GithubRepoActivity : AppCompatActivity() {
     }
 
     private fun viewState(viewState: GithubRepoVM.ViewState) {
+        hideLoadingView()
         when (viewState) {
-            is GithubRepoVM.ViewState.Loading -> {
-            }
+            is GithubRepoVM.ViewState.Loading -> showLoadingView()
             is GithubRepoVM.ViewState.Data -> {
-                mViewBinding.lyErrorView.layoutError.visibility = View.GONE
-                mViewBinding.recyclerView.visibility = View.VISIBLE
-                adapter.setList(viewState.repos ?: listOf())
+                if (!(viewState.repos.isNullOrEmpty())) {
+                    adapter.setList(viewState.repos)
+                    showDataView(true)
+                } else {
+                    showDataView(false)
+                }
             }
 
             is GithubRepoVM.ViewState.Failure -> {
@@ -62,6 +65,19 @@ class GithubRepoActivity : AppCompatActivity() {
         }
     }
 
+    private fun hideLoadingView() {
+        mViewBinding.lyLoadingView.shimmerFrameLayout.visibility = View.GONE
+    }
+    private fun showLoadingView() {
+        mViewBinding.lyLoadingView.shimmerFrameLayout.visibility = View.VISIBLE
+        mViewBinding.recyclerView.visibility = View.GONE
+        mViewBinding.lyErrorView.layoutError.visibility = View.GONE
+    }
+
+    private fun showDataView(isListShow: Boolean) {
+        mViewBinding.lyErrorView.layoutError.visibility = if (isListShow) View.GONE else View.VISIBLE
+        mViewBinding.recyclerView.visibility = if (isListShow) View.VISIBLE else View.GONE
+    }
 
     private fun addObservers() {
         viewModel.viewState.observe(this, ::viewState)
