@@ -9,10 +9,12 @@ import com.task.githubrepo.data.remote.base.NetworkResult
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import retrofit2.Response
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class TrendingRepoTest {
@@ -46,8 +48,21 @@ class TrendingRepoTest {
         val actualResult = sut.fetchTrendingRepos(isFromCache = true) as NetworkResult.Success
         val expectedResult = listOf<Item>(mockk(), mockk())
         Assert.assertEquals(expectedResult.size, actualResult.data.items?.size)
+        coVerify { mockLocalSource.getLocallySaveRepo() }
     }
 
+    @Test
+    fun test_repository_fetch_repos_failed() = runTest {
+        val errorMsg = "Request failed please try again"
+        coEvery { mockRemoteSource.fetchRepo()} returns mockk<NetworkResult.Error>{
+            every { error } returns mockk{
+                every { message } returns errorMsg
+            }
+        }
+        val actual = sut.fetchTrendingRepos(isFromCache = false) as NetworkResult.Error
+        Assert.assertEquals(errorMsg, actual.error.message)
+        coVerify { mockRemoteSource.fetchRepo() }
+    }
     @After
     fun tearDown() {
         clearAllMocks()
